@@ -1,3 +1,13 @@
+def quick_sort(lista):
+    if len(lista) <= 1:
+        return lista
+
+    pivote = lista[0]
+    menores = [x for x in lista[1:] if x < pivote]
+    iguales = [x for x in lista if x == pivote]
+    mayores = [x for x in lista[1:] if x > pivote]
+
+    return quick_sort(menores) + iguales + quick_sort(mayores)
 repartidores={}
 while True:
     print("Menu")
@@ -27,9 +37,18 @@ while True:
                 repartidores[codigo]["zona"]=input("Ingrese la zona")
         case 2:
             print("Datos Ordenados")
-
+            print("\nLista de repartidores:")
+            cantidadPaquetes=list(repartidores.keys())
+            ordenarDiccionarios=quick_sort(cantidadPaquetes)
+            for cantidadPaquetes in ordenarDiccionarios:
+                datos=repartidores[cantidadPaquetes]
+                print(f"\nCodigo: {codigo}")
+                print(f"Nombre: {datos['nombre']}")
+                print(f"Cantidad Paquetes: {datos['cantidadPaquetes']}")
+                print(f"Zona: {datos['zona']}")
         case 3:
             print("Buscar")
+
         case 4:
             print("Salir")
             break
