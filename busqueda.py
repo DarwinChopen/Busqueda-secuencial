@@ -1,13 +1,18 @@
 def quick_sort(lista):
     if len(lista) <= 1:
         return lista
-
     pivote = lista[0]
     menores = [x for x in lista[1:] if x < pivote]
     iguales = [x for x in lista if x == pivote]
     mayores = [x for x in lista[1:] if x > pivote]
 
     return quick_sort(menores) + iguales + quick_sort(mayores)
+
+def buscar(diccionario, nombre_objetivo):
+    for datos in diccionario.values():
+        if datos["nombre"].lower() == nombre_objetivo.lower():
+            return datos
+    return None
 repartidores={}
 while True:
     print("Menu")
@@ -26,7 +31,7 @@ while True:
             for i in range(cantidad):
                 print(f"\nRepartidor #{i + 1}")
                 while True:
-                   codigo = input(int("Ingrese el Codigo del repartidor: "))
+                   codigo = int(input("Ingrese el Codigo del repartidor: "))
                    if codigo in repartidores:
                        print("Este codigo ya existe Ingrese otro")
                    else:
@@ -36,19 +41,18 @@ while True:
                 repartidores[codigo]["cantidadPaquetes"]=int(input("Ingrese la cantidad de paquetes"))
                 repartidores[codigo]["zona"]=input("Ingrese la zona")
         case 2:
+            listaOrdenada = [(codigo, datos["nombre"], datos["cantidadPaquetes"], datos["zona"])for codigo, datos in repartidores.items()]
+            listaOrdenada = quick_sort(listaOrdenada)
             print("Datos Ordenados")
-            print("\nLista de repartidores:")
-            cantidadPaquetes=list(repartidores.keys())
-            ordenarDiccionarios=quick_sort(cantidadPaquetes)
-            for cantidadPaquetes in ordenarDiccionarios:
-                datos=repartidores[cantidadPaquetes]
-                print(f"\nCodigo: {codigo}")
-                print(f"Nombre: {datos['nombre']}")
-                print(f"Cantidad Paquetes: {datos['cantidadPaquetes']}")
-                print(f"Zona: {datos['zona']}")
+            for i, (codigo, nombre, paquetes, zona) in enumerate(listaOrdenada, 1):
+                print(f"{i}. {nombre} - Paquetes: {paquetes}, Zona: {zona}")
         case 3:
-            print("Buscar")
-
+            nombreBbuscar = input("Ingrese el nombre del repartidor: ").strip()
+            resultado = buscar(repartidores, nombreBbuscar)
+            if resultado:
+                print(f"{resultado['nombre']} entregó {resultado['cantidadPaquetes']} paquetes en la zona {resultado['zona']}.")
+            else:
+                print("no se encontro a nadie.")
         case 4:
             print("Salir")
             break
